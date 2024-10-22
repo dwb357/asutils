@@ -1,8 +1,8 @@
 //
 //  TypingIndicator.swift
-//  SwiftUIHost
+//  ASUtils-UI
 //
-//  Created by David Berry on 10/2/24.
+//  © Copyright 2024 David W. Berry. All Rights Reserved.
 //
 
 import SwiftUI

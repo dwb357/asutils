@@ -1,6 +1,8 @@
 //
-// Copyright © 2024, David W. Berry
-// All rights reserved.
+//  ASUtils-UI
+//
+//  © Copyright 2024 David W. Berry. All Rights Reserved.
+//
 //
 
 import Testing
