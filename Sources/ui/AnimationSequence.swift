@@ -1,8 +1,6 @@
 //
-//  AnimationSequence.swift
-//  ASUtils-UI
-//
-//  © Copyright 2024 David W. Berry. All Rights Reserved.
+// Copyright © 2024, David W. Berry
+// All rights reserved.
 //
 
 import SwiftUI
@@ -53,12 +51,16 @@ public struct AnimationSequence: Sendable {
             switch style {
             case .linear:
                 return .linear(duration: duration)
+
             case .easeIn:
                 return .easeIn(duration: duration)
+
             case .easeOut:
                 return .easeOut(duration: duration)
+
             case .easeInOut:
                 return .easeInOut(duration: duration)
+
             case .bouncy:
                 return .bouncy(duration: duration)
             }
@@ -71,7 +73,7 @@ public struct AnimationSequence: Sendable {
     /// Default animation duration
     public static let defaultDuration = 0.1
 
-    /// Delay to be applied to new animations.  If a nil delay
+    /// Delay to be applied to new animations. If a nil delay
     /// is specified, the duration will be used as the delay.
     let delay: TimeInterval?
 
@@ -124,8 +126,8 @@ public struct AnimationSequence: Sendable {
     ///
     /// - parameter style: New animation style to apply
     /// - returns: Updated `AnimationSequence`
-    public func style(_ style: Style) -> AnimationSequence {
-        AnimationSequence(
+    public func style(_ style: Style) -> Self {
+        Self(
             style: style,
             delay: delay,
             duration: duration,
@@ -139,8 +141,8 @@ public struct AnimationSequence: Sendable {
     ///
     /// - parameter delay: Delay to apply to new animations.
     /// - returns: Updated `AnimationSequence`
-    public func delay(_ delay: TimeInterval?) -> AnimationSequence {
-        AnimationSequence(
+    public func delay(_ delay: TimeInterval?) -> Self {
+        Self(
             style: style,
             delay: delay,
             duration: duration,
@@ -154,8 +156,8 @@ public struct AnimationSequence: Sendable {
     ///
     /// - parameter duration: New animation duration to apply
     /// - returns: Updated `AnimationSequence`
-    public func duration(_ duration: TimeInterval) -> AnimationSequence {
-        AnimationSequence(
+    public func duration(_ duration: TimeInterval) -> Self {
+        Self(
             style: style,
             delay: delay,
             duration: duration,
@@ -165,11 +167,11 @@ public struct AnimationSequence: Sendable {
 
     /// Add a new animation to the sequence
     /// - parameters:
-    ///     - style: `Style` of animation to add.  If nil or not specified the default style for the
+    ///     - style: `Style` of animation to add. If nil or not specified the default style for the
     ///     sequence will be applied.
-    ///     - delay: delay of animation to add.  If nil or not specified, the default delay for the
+    ///     - delay: delay of animation to add. If nil or not specified, the default delay for the
     ///     sequence will be applied.
-    ///     - duration: duration of animation to add.  If nil or not specified, the default duration for the
+    ///     - duration: duration of animation to add. If nil or not specified, the default duration for the
     ///     sequence will be applied
     ///     - block: the actual changes to animate
     /// - returns: Updated `AnimationSequence`
@@ -178,8 +180,8 @@ public struct AnimationSequence: Sendable {
         delay: TimeInterval? = nil,
         duration: TimeInterval? = nil,
         block: @Sendable @MainActor @escaping () -> Void
-    ) -> AnimationSequence {
-        AnimationSequence(
+    ) -> Self {
+        Self(
             style: self.style,
             delay: self.delay,
             duration: self.duration,
@@ -220,11 +222,13 @@ public struct AnimationSequence: Sendable {
 
                 offset += animation.delay
 
-                if index + 1 == animations.endIndex, let completion = completion {
+                if index + 1 == animations.endIndex, let completion {
                     Task {
-                        try await Task.sleep(nanoseconds: offset.nanoseconds)
+                        try? await Task.sleep(nanoseconds: offset.nanoseconds)
 
-                        completion()
+                        if !Task.isCancelled {
+                            completion()
+                        }
                     }
                 }
             }
@@ -233,7 +237,7 @@ public struct AnimationSequence: Sendable {
 
     /// Start the animation sequence running repeatedly
     /// - parameters:
-    ///     - count: number of times to repeat the animation.  Defaults to Int.max
+    ///     - count: number of times to repeat the animation. Defaults to Int.max
     ///     - delay: seconds to delay after each iteration of the sequence.
     public func `repeat`(
         count: Int = .max,
@@ -258,8 +262,10 @@ public struct AnimationSequence: Sendable {
 }
 
 private extension TimeInterval {
+    static let nanoPerSecond = 1e9
+
     var nanoseconds: UInt64 {
-        UInt64(self * 1e9)
+        UInt64(self * Self.nanoPerSecond)
     }
 }
 

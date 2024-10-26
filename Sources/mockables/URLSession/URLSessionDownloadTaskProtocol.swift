@@ -6,10 +6,11 @@
 import Foundation
 import Mockable
 
+// swiftlint:disable missing_docs
+
+/// Mockable ``URLSessionDownloadTask``
 @Mockable
 public protocol URLSessionDownloadTaskProtocol {
-    func cancel(byProducingResumeData: @escaping @Sendable (Data?) -> Void)
-
     // MARK: - URLSessionTaskProtocol
 
     var taskIdentifier: Int { get }
@@ -53,6 +54,12 @@ public protocol URLSessionDownloadTaskProtocol {
 
     var prefersIncrementalDelivery: Bool { get set }
 
+    // MARK: - Methods
+
+    func cancel(byProducingResumeData: @escaping @Sendable (Data?) -> Void)
+
+    // MARK: - URLSessionTask
+
     func cancel()
 
     func suspend()
@@ -61,3 +68,5 @@ public protocol URLSessionDownloadTaskProtocol {
 }
 
 extension URLSessionDownloadTask: URLSessionDownloadTaskProtocol {}
+
+// swiftlint:enable missing_docs

@@ -6,9 +6,10 @@
 import Foundation
 import Mockable
 
+// swiftlint:disable missing_docs
+
 @Mockable
 public protocol URLSessionProtocol {
-
     typealias DataTaskPublisher = URLSession.DataTaskPublisher
 
     // MARK: - Properties
@@ -55,7 +56,8 @@ public protocol URLSessionProtocol {
 
     func upload(
         for request: URLRequest,
-        from: Data, delegate: (any URLSessionTaskDelegate)?
+        from: Data,
+        delegate: (any URLSessionTaskDelegate)?
     ) async throws -> (Data, URLResponse)
 
     func upload(
@@ -159,10 +161,15 @@ public protocol URLSessionProtocol {
     func dataTaskPublisher(for request: URLRequest) -> DataTaskPublisher
 
     func dataTaskPublisher(for url: URL) -> DataTaskPublisher
+
+    // MARK: - Adding WebSocket tasks to a session
+
+    func webSocketTask(with url: URL) -> URLSessionWebSocketTaskProtocol
+
+    func webSocketTask(with url: URL, protocols: [String]) -> URLSessionWebSocketTaskProtocol
 }
 
 extension URLSession: URLSessionProtocol {
-
     // MARK: - Adding data tasks to a session
 
     public func dataTask(
@@ -293,3 +300,5 @@ extension URLSession: URLSessionProtocol {
         webSocketTask(with: url, protocols: protocols) as URLSessionWebSocketTask
     }
 }
+
+// swiftlint:enable missing_docs

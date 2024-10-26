@@ -1,8 +1,6 @@
 //
-//  TypingIndicator.swift
-//  ASUtils-UI
-//
-//  © Copyright 2024 David W. Berry. All Rights Reserved.
+// Copyright © 2024, David W. Berry
+// All rights reserved.
 //
 
 import SwiftUI
@@ -11,13 +9,13 @@ import SwiftUI
 
 struct TypingIndicator: View {
     static let dotSize: CGFloat = 30.0
-    static let offset = dotSize / 2
+    static let offset = dotSize / 2 // swiftlint:disable:this no_magic_numbers
     static let dotCount = 3
     static let animationTime = 0.5
     static let spacing = 2.0
     static let repeatDelay = 0.5
 
-    @State var dotState = [CGFloat](repeatElement(0.0, count: Self.dotCount))
+    @State private var dotState = [CGFloat](repeatElement(0.0, count: Self.dotCount))
 
     var body: some View {
         HStack(alignment: .bottom, spacing: Self.spacing) {
@@ -33,7 +31,8 @@ struct TypingIndicator: View {
                 animation
                     .append { dotState[index] = Self.offset }
                     .append { dotState[index] = 0 }
-            }.repeat(delay: Self.repeatDelay)
+            }
+            .repeat(delay: Self.repeatDelay)
         }
     }
 

@@ -5,4 +5,5 @@
 
 import Foundation
 
+/// "Mockable" ``URLSessionDataTask``
 public typealias URLSessionDataTaskProtocol = URLSessionTaskProtocol

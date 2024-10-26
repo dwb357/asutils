@@ -6,39 +6,14 @@
 import Foundation
 import Mockable
 
+// swiftlint:disable missing_docs
+
 @Mockable
 public protocol URLSessionStreamTaskProtocol {
+    // MARK: - URLSessionTask properties
 
-    // MARK: - Reading and writing data
-
-    func readData(
-        ofMinLength min: Int,
-        maxLength max: Int,
-        timeout: TimeInterval,
-        completionHandler handler: @escaping @Sendable (Data?, Bool, (any Error)?) -> Void
-    )
-
-    func write(
-        _ data: Data,
-        timeout: TimeInterval,
-        completionHandler handler: @escaping @Sendable ((any Error)?) -> Void
-    )
-
-    // MARK: - Capturing streams
-
-    func captureStreams()
-
-    // MARK: - Closing read and write sockets
-
-    func closeRead()
-
-    func closeWrite()
-
-    // MARK: - Starting and stopping secure connections
-
-    func startSecureConnection()
-
-    // MARK: - URLSessionTaskProtocol
+    // These properties are duplicated here from URLSessionProtocol
+    // to allow proper mocking using Mockable.
 
     var taskIdentifier: Int { get }
 
@@ -81,12 +56,44 @@ public protocol URLSessionStreamTaskProtocol {
 
     var prefersIncrementalDelivery: Bool { get set }
 
+    // MARK: - Reading and writing data
+
+    func readData(
+        ofMinLength min: Int,
+        maxLength max: Int,
+        timeout: TimeInterval,
+        completionHandler handler: @escaping @Sendable (Data?, Bool, (any Error)?) -> Void
+    )
+
+    func write(
+        _ data: Data,
+        timeout: TimeInterval,
+        completionHandler handler: @escaping @Sendable ((any Error)?) -> Void
+    )
+
+    // MARK: - Capturing streams
+
+    func captureStreams()
+
+    // MARK: - Closing read and write sockets
+
+    func closeRead()
+
+    func closeWrite()
+
+    // MARK: - Starting and stopping secure connections
+
+    func startSecureConnection()
+
+    // MARK: - URLSessionTask
+
     func cancel()
 
     func suspend()
 
     func resume()
-
 }
 
 extension URLSessionStreamTask: URLSessionStreamTaskProtocol {}
+
+// swiftlint:enable missing_docs

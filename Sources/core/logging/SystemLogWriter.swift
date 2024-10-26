@@ -22,10 +22,13 @@ public struct SystemLogWriter: LogWriter {
         switch level {
         case .debug, .trace:
             logger.debug("\(format(message, level: level, file: file, line: line))")
+
         case .info:
             logger.info("\(format(message, level: level, file: file, line: line))")
+
         case .warning:
             logger.warning("\(format(message, level: level, file: file, line: line))")
+
         case .error, .fatal:
             logger.error("\(format(message, level: level, file: file, line: line))")
         }

@@ -6,6 +6,8 @@
 import Foundation
 import Mockable
 
+// swiftlint:disable missing_docs
+
 @Mockable
 public protocol URLSessionTaskProtocol {
     var taskIdentifier: Int { get }
@@ -57,3 +59,5 @@ public protocol URLSessionTaskProtocol {
 }
 
 extension URLSessionTask: URLSessionTaskProtocol {}
+
+// swiftlint:enable missing_docs

@@ -9,6 +9,8 @@ public extension OutputStream {
     enum StreamError: Error {
         /// An error occured when converting a string to UTF8 to write to a file
         case invalidStringConversion
+        /// An unknown error occured while writing a file
+        case unknownError
     }
 
     /// write Data to a file
@@ -22,9 +24,10 @@ public extension OutputStream {
             var buffer = rawBuffer.bindMemory(to: UInt8.self)
 
             while !buffer.isEmpty {
+                // swiftlint:disable:next force_unwrapping
                 let written = self.write(buffer.baseAddress!, maxLength: buffer.count)
                 guard written >= 0 else {
-                    throw self.streamError!
+                    throw self.streamError ?? StreamError.unknownError
                 }
                 buffer = .init(rebasing: buffer.dropFirst(written))
             }

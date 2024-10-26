@@ -6,9 +6,10 @@
 import Foundation
 import Mockable
 
+// swiftlint:disable missing_docs
+
 @Mockable
 public protocol URLSessionWebSocketTaskProtocol {
-
     typealias Message = URLSessionWebSocketTask.Message
 
     typealias CloseCode = URLSessionWebSocketTask.CloseCode
@@ -18,29 +19,6 @@ public protocol URLSessionWebSocketTaskProtocol {
     var closeCode: CloseCode { get }
 
     var closeReason: Data? { get }
-
-    // MARK: - Sending and receiving data
-
-    func send(
-        _ message: Message,
-        completionHandler: @escaping @Sendable ((any Error)?) -> Void
-    )
-
-    func send(_ message: Message) async throws
-
-    func receive(
-        completionHandler handler: @escaping @Sendable (Result<Message, any Error>) -> Void
-    )
-
-    func receive() async throws -> Message
-
-    // MARK: - Sending ping frames
-
-    func sendPing(pongReceiveHandler handler: @escaping @Sendable ((any Error)?) -> Void)
-
-    // MARK: - Closing the connection
-
-    func cancel(with: CloseCode, reason: Data?)
 
     // MARK: - URLSessionTaskProtocol
 
@@ -85,6 +63,31 @@ public protocol URLSessionWebSocketTaskProtocol {
 
     var prefersIncrementalDelivery: Bool { get set }
 
+    // MARK: - Sending and receiving data
+
+    func send(
+        _ message: Message,
+        completionHandler: @escaping @Sendable ((any Error)?) -> Void
+    )
+
+    func send(_ message: Message) async throws
+
+    func receive(
+        completionHandler handler: @escaping @Sendable (Result<Message, any Error>) -> Void
+    )
+
+    func receive() async throws -> Message
+
+    // MARK: - Sending ping frames
+
+    func sendPing(pongReceiveHandler handler: @escaping @Sendable ((any Error)?) -> Void)
+
+    // MARK: - Closing the connection
+
+    func cancel(with: CloseCode, reason: Data?)
+
+    // MARK: - URLSessionTaskProtocol
+
     func cancel()
 
     func suspend()
@@ -93,3 +96,5 @@ public protocol URLSessionWebSocketTaskProtocol {
 }
 
 extension URLSessionWebSocketTask: URLSessionWebSocketTaskProtocol {}
+
+// swiftlint:enable missing_docs
