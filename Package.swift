@@ -10,28 +10,58 @@ let package = Package(
     name: "asutils",
     platforms: [.iOS(.v15), .macOS(.v13)],
     products: [
-        .library(
-            name: "asutils-core",
-            targets: [ "asutils-core" ]
-        ),
-        .library(
-            name: "asutils-ui",
-            targets: [ "asutils-ui" ]
-        ),
+        .library(name: "mockables", targets: [ "mockables" ]),
+        .library(name: "asutils-core", targets: [ "asutils-core" ]),
+        .library(name: "asutils-ui", targets: [ "asutils-ui" ]),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/Kolos65/Mockable", from: "0.0.11"),
+        .package(url: "https://github.com/realm/SwiftLint", from: "0.55.1"),
     ],
     targets: [
         .target(
+            name: "mockables",
+            dependencies: [
+                .product(name: "Mockable", package: "Mockable")
+            ],
+            path: "Sources/mockables",
+            swiftSettings: [
+                .define("MOCKING", .when(configuration: .debug))
+            ],
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
+            ]
+        ),
+        .target(
             name: "asutils-core",
-            path: "Sources/core"
+            dependencies: [
+                .product(name: "Mockable", package: "Mockable")
+            ],
+            path: "Sources/core",
+            swiftSettings: [
+                .define("MOCKING", .when(configuration: .debug))
+            ],
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
+            ]
         ),
         .testTarget(
             name: "asutils-core-tests",
-            dependencies: ["asutils-core"],
-            path: "Tests/core"
+            dependencies: [
+                "asutils-core",
+                .product(name: "Mockable", package: "Mockable")
+            ],
+            path: "Tests/core",
+            swiftSettings: [
+                .define("MOCKING", .when(configuration: .debug))
+            ]
         ),
         .target(
             name: "asutils-ui",
-            path: "Sources/ui"
+            path: "Sources/ui",
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
+            ]
         ),
         .testTarget(
             name: "asutils-ui-tests",

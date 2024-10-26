@@ -6,7 +6,7 @@ import Testing
 import Foundation
 @testable import asutils_core
 
-final class URLComponentsExtTests {
+final class URLComponentsBuilderTests {
     @Test
     func testWithScheme() {
         let start = URLComponents(string: "http://some.where")!
