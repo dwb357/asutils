@@ -154,7 +154,7 @@ final class URLComponentsBuilderTests {
         #expect(
             "http://some.where/a?a=b&c" ==
             start
-                .queries(("a", "b"), ("c", String?.none))
+                .query(("a", "b"), ("c", String?.none))
                 .url?
                 .absoluteString
         )
