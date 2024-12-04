@@ -10,7 +10,7 @@ public struct SystemLogWriter: LogWriter {
     let format: LogFormatter
     let logger: Logger
 
-    init(logger: Logger = Logger(), format: @escaping LogFormatter = LogFormatters.default) {
+    init(logger: Logger = Logger(), format: LogFormatter = .default) {
         self.logger = logger
         self.format = format
     }
@@ -23,7 +23,14 @@ public struct SystemLogWriter: LogWriter {
         fun: StaticString,
         line: UInt
     ) {
-        let message = format(message, level, category, file, fun, line)
+        let message = format(
+            message,
+            level: level,
+            category: category,
+            file: file,
+            fun: fun,
+            line: line
+        )
 
         switch level {
         case .debug, .trace:

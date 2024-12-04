@@ -24,6 +24,14 @@ import Foundation
 ///
 /// Most ``LogWriter`` implementations support the specification of a ``LogFormatter``.
 ///
+/// `SharedLogWriter` and `filter` can also be combined to log different categories of messages
+/// using different loggers:
+///
+///     LogManager.logger = SharedLogWriter(
+///         FileLogWriter("log"),
+///         SystemLogWriter().filter(categories: "CORE")
+///     )
+///     
 /// The optional `category` parameter can be used to distinguish between messages arising
 /// in different modules:
 ///

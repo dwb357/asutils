@@ -3,12 +3,11 @@
 // All rights reserved.
 //
 
-import Testing
 @testable import asutils_core
 import Mockable
+import Testing
 
-struct FilteredLogWriterTests {
-
+struct LogFilterTests {
     init() {
         Matcher.register(StaticString.self) { $0.description == $1.description }
     }
@@ -42,5 +41,34 @@ struct FilteredLogWriterTests {
                 line: .value(line)
             )
             .called(level >= target ? 1 : 0)
+    }
+
+    @Test(arguments: ["Test", "Other"], ["Test", "Other"])
+    func filterByCategory(category: String, target: String) async throws {
+        let mock = MockLogWriter(policy: .relaxed)
+        let writer = mock.filter(categories: target)
+        let file: StaticString = #file
+        let function: StaticString = #function
+        let line: UInt = #line
+
+        writer.log(
+            "Hello World",
+            level: .debug,
+            category: category,
+            file: file,
+            fun: function,
+            line: line
+        )
+
+        verify(mock)
+            .log(
+                .value("Hello World"),
+                level: .value(.debug),
+                category: .value(category),
+                file: .value(file),
+                fun: .value(function),
+                line: .value(line)
+            )
+            .called(category == target ? 1 : 0)
     }
 }

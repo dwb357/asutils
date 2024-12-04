@@ -15,8 +15,8 @@ import Foundation
 ///     - predicate: predicate filter to be applied to every message to send. Only if `predicate` returns true
 ///     will the message be written via `writer`.
 ///     - writer: underlying writer to use. Messages matching `predicate` will be output using `writer`
-public struct FilteredLogWriter: LogWriter {
-    public typealias Predicate = (String, String?, LogLevel, StaticString, StaticString, UInt) -> Bool
+public struct LogFilter: LogWriter {
+    public typealias Predicate = (String, LogLevel, String?, StaticString, StaticString, UInt) -> Bool
 
     let predicate: Predicate
     let writer: LogWriter
@@ -29,7 +29,7 @@ public struct FilteredLogWriter: LogWriter {
         fun: StaticString,
         line: UInt
     ) {
-        if predicate(message, category, level, file, fun, line) {
+        if predicate(message, level, category, file, fun, line) {
             writer.log(
                 message,
                 level: level,
@@ -46,16 +46,24 @@ public extension LogWriter {
     /// Apply a filter to a ``LogWriter``. The receiver `LogWriter` will only log messages that match `predicate`
     /// - parameter predicate: Predicate to match.
     func filter(
-        _ predicate: @escaping FilteredLogWriter.Predicate
+        _ predicate: @escaping LogFilter.Predicate
     ) -> LogWriter {
-        FilteredLogWriter(predicate: predicate, writer: self)
+        LogFilter(predicate: predicate, writer: self)
     }
 
     /// Apply a filter to a ``LogWriter``. The receiver `LogWriter` will only log messages with a level >= `level`
     /// - parameter minLevel: Minimum `LogLevel` to log
     func filter(level minLevel: LogLevel) -> LogWriter {
-        filter { _, _, level, _, _, _ in
+        filter { _, level, _, _, _, _ in
             level >= minLevel
+        }
+    }
+
+    /// Apply a filter to a ``LogWriter`` based on only passing messages in a list of categories.
+    /// - parameter categories: list of categories to be logged
+    func filter(categories: String...) -> LogWriter {
+        filter { _, _, category, _, _, _ in
+            category.map(categories.contains) ?? false
         }
     }
 }

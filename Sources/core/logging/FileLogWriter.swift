@@ -11,7 +11,7 @@ public struct FileLogWriter: LogWriter {
     let path: URL
     let format: LogFormatter
 
-    init(path: URL, format: @escaping LogFormatter = LogFormatters.default) {
+    init(path: URL, format: LogFormatter = .default) {
         self.path = path
         self.format = format
     }
@@ -25,7 +25,14 @@ public struct FileLogWriter: LogWriter {
         fun: StaticString,
         line: UInt
     ) {
-        let formatted = format(message, level, category, file, fun, line)
+        let formatted = format(
+            message,
+            level: level,
+            category: category,
+            file: file,
+            fun: fun,
+            line: line
+        )
 
         try? OutputStream(url: path, append: true)?.use { stream in
             do {

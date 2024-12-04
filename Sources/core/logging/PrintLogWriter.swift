@@ -6,7 +6,7 @@
 import Foundation
 
 public struct PrintLogWriter: LogWriter {
-    let format = LogFormatters.medium
+    let format = LogFormatter.default
 
     public func log( // swiftlint:disable:this function_parameter_count
         _ message: String,
@@ -16,6 +16,15 @@ public struct PrintLogWriter: LogWriter {
         fun: StaticString,
         line: UInt
     ) {
-        print(format(message, level, category, file, fun, line))
+        print(
+            format(
+                message,
+                level: level,
+                category: category,
+                file: file,
+                fun: fun,
+                line: line
+            )
+        )
     }
 }
