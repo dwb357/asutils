@@ -9,12 +9,25 @@ import Foundation
 /// - parameter path: File path to write messages
 public struct FileLogWriter: LogWriter {
     let path: URL
+    let format: LogFormatter
+
+    init(path: URL, format: @escaping LogFormatter = LogFormatters.default) {
+        self.path = path
+        self.format = format
+    }
 
     /// Implement
-    public func logMessage(_ message: String, level: LogLevel, file: StaticString, line: UInt) {
-        let formatted = format(message, level: level, file: file, line: line)
+    public func log( // swiftlint:disable:this function_parameter_count
+        _ message: String,
+        level: LogLevel,
+        category: String?,
+        file: StaticString,
+        fun: StaticString,
+        line: UInt
+    ) {
+        let formatted = format(message, level, category, file, fun, line)
 
-        OutputStream(url: path, append: true)?.use { stream in
+        try? OutputStream(url: path, append: true)?.use { stream in
             do {
                 try stream.write(formatted).write("\n\r")
             } catch {

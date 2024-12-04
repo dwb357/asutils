@@ -8,7 +8,7 @@ import Mockable
 
 // swiftlint:disable missing_docs
 
-/// Mockable ``URLSessionDownloadTask``
+/// Mockable `URLSessionDownloadTask`
 @Mockable
 public protocol URLSessionDownloadTaskProtocol {
     // MARK: - URLSessionTaskProtocol

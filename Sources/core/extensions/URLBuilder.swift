@@ -5,7 +5,10 @@
 
 import Foundation
 
-public extension URLComponents {
+/// A builder model for creating URLs
+public typealias URLBuilder = URLComponents
+
+public extension URLBuilder {
     /// helper for builder pattern functions
     private func mutate(_ body: (inout Self) -> Void) -> Self {
         var mutable = self
@@ -13,63 +16,63 @@ public extension URLComponents {
         return mutable
     }
 
-    /// builder pattern to set the `scheme` of a ``URLComponents``
+    /// builder pattern to set the `scheme` of a ``URLBuilder``
     /// - parameter scheme: scheme to assign
-    /// - returns a new, modified, `URLComponents`
+    /// - returns a new, modified, `URLBuilder`
     func scheme(_ scheme: String) -> Self {
         mutate { components in
             components.scheme = scheme
         }
     }
 
-    /// builder pattern to set the `host` of a ``URLComponents``
+    /// builder pattern to set the `host` of a ``URLBuilder``
     /// - parameter host: host to assign
-    /// - returns a new, modified, `URLComponents`
+    /// - returns a new, modified, `URLBuilder`
     func host(_ host: String) -> Self {
         mutate { components in
             components.host = host
         }
     }
 
-    /// builder pattern to set the `port` of a ``URLComponents``
+    /// builder pattern to set the `port` of a ``URLBuilder``
     /// - parameter port: port to assign
-    /// - returns a new, modified, `URLComponents`
+    /// - returns a new, modified, `URLBuilder`
     func port(_ port: Int?) -> Self {
         mutate { components in
             components.port = port
         }
     }
 
-    /// builder pattern to set the `user` of a ``URLComponents``
+    /// builder pattern to set the `user` of a ``URLBuilder``
     /// - parameter user: user to assign
-    /// - returns a new, modified, `URLComponents`
+    /// - returns a new, modified, `URLBuilder`
     func user(_ user: String) -> Self {
         mutate { components in
             components.user = user
         }
     }
 
-    /// builder pattern to set the `password` of a ``URLComponents``
+    /// builder pattern to set the `password` of a ``URLBuilder``
     /// - parameter password: password to assign
-    /// - returns a new, modified, `URLComponents`
+    /// - returns a new, modified, `URLBuilder`
     func password(_ password: String) -> Self {
         mutate { components in
             components.password = password
         }
     }
 
-    /// builder pattern to set the `path` of a ``URLComponents``
+    /// builder pattern to set the `path` of a ``URLBuilder``
     /// - parameter path: path to assign
-    /// - returns a new, modified, `URLComponents`
+    /// - returns a new, modified, `URLBuilder`
     func path(_ path: String) -> Self {
         mutate { components in
             components.path = path.hasPrefix("/") ? path : ("/" + path)
         }
     }
 
-    /// builder pattern to append to the `path` of a ``URLComponents``
+    /// builder pattern to append to the `path` of a ``URLBuilder``
     /// - parameter path: path to append
-    /// - returns a new, modified, `URLComponents`
+    /// - returns a new, modified, `URLBuilder`
     func append(path: String) -> Self {
         mutate { components in
             let first = components.path.hasSuffix("/")
@@ -83,21 +86,21 @@ public extension URLComponents {
         }
     }
 
-    /// builder pattern to append to the path of a ``URLComponents``
+    /// builder pattern to append to the path of a ``URLBuilder``
     /// - parameter elements: path elements to append, appended elements
     /// will be separated by the standard path separator "/".
-    /// - returns a new, modified, `URLComponents`
+    /// - returns a new, modified, `URLBuilder`
     func append(elements: String...) -> Self {
         append(
             path: elements.joined(separator: "/")
         )
     }
 
-    /// builder pattern to append a query to a ``URLComponents``
+    /// builder pattern to append a query to a ``URLBuilder``
     /// - parameter query: query to assign
     /// - parameter value: value to assign to query, if not nil no value will be associated
     /// with the query
-    /// - returns a new, modified, `URLComponents`
+    /// - returns a new, modified, `URLBuilder`
     func append(query: String, value: String? = nil) -> Self {
         mutate { components in
             components.queryItems = (components.queryItems ?? [])
@@ -105,9 +108,9 @@ public extension URLComponents {
         }
     }
 
-    /// builder pattern to set the `query` of a ``URLComponents``
-    /// - parameter query: query to assign
-    /// - returns a new, modified, `URLComponents`
+    /// builder pattern to set the `query` of a ``URLBuilder``
+    /// - parameter queries: query to assign
+    /// - returns a new, modified, `URLBuilder`
     func query(_ queries: (String, String?)...) -> Self {
         mutate { components in
             components.queryItems = (components.queryItems ?? [])
@@ -115,9 +118,9 @@ public extension URLComponents {
         }
     }
 
-    /// builder pattern to set the `fragment` of a ``URLComponents``
+    /// builder pattern to set the `fragment` of a ``URLBuilder``
     /// - parameter fragment: fragment to assign
-    /// - returns a new, modified, `URLComponents`
+    /// - returns a new, modified, `URLBuilder`
     func fragment(_ fragment: String?) -> Self {
         mutate { components in
             components.fragment = fragment
@@ -126,8 +129,8 @@ public extension URLComponents {
 }
 
 public extension URL {
-    /// Create a builder (``URLComponents``) from the target URL
-    var builder: URLComponents? {
-        URLComponents(url: self, resolvingAgainstBaseURL: true)
+    /// Create a builder (``URLBuilder``) from the target URL
+    var builder: URLBuilder? {
+        URLBuilder(url: self, resolvingAgainstBaseURL: true)
     }
 }

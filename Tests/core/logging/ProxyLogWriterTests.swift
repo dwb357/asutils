@@ -17,18 +17,41 @@ struct Test {
     func proxyDistributesLogMessages(level: LogLevel) {
         let mock1 = MockLogWriter(policy: .relaxed)
         let mock2 = MockLogWriter(policy: .relaxed)
-        let proxy = ProxyLogWriter(loggers: mock1, mock2)
+        let proxy = SharedLogWriter(mock1, mock2)
+        let category = "Test"
         let file: StaticString = #file
+        let function: StaticString = #function
         let line: UInt = #line
 
-        proxy.logMessage("Hello, world!", level: level, file: file, line: line)
+        proxy.log(
+            "Hello, world!",
+            level: level,
+            category: category,
+            file: file,
+            fun: function,
+            line: line
+        )
 
         verify(mock1)
-            .logMessage(.value("Hello, world!"), level: .value(level), file: .value(file), line: .value(line))
+            .log(
+                .value("Hello, world!"),
+                level: .value(level),
+                category: .value(category),
+                file: .value(file),
+                fun: .value(function),
+                line: .value(line)
+            )
             .called(1)
 
         verify(mock2)
-            .logMessage(.value("Hello, world!"), level: .value(level), file: .value(file), line: .value(line))
+            .log(
+                .value("Hello, world!"),
+                level: .value(level),
+                category: .value(category),
+                file: .value(file),
+                fun: .value(function),
+                line: .value(line)
+            )
             .called(1)
     }
 

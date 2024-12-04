@@ -6,13 +6,13 @@
 import Foundation
 
 /// Log messages by logging them to each of the children ``LogWriter``s.
-public class ProxyLogWriter: LogWriter {
+public class SharedLogWriter: LogWriter {
     let loggers: [LogWriter]
 
     /// Create a new ProxyLogWriter to forward messages to a given list of ``LogWriter``
     /// 
     /// - parameter loggers: vararg list of LogWriters to target
-    public init(loggers: LogWriter...) {
+    public init(_ loggers: LogWriter...) {
         self.loggers = loggers
     }
 
@@ -23,14 +23,16 @@ public class ProxyLogWriter: LogWriter {
     ///     - level: level of message to log
     ///     - file: file where error occured
     ///     - line: line where error occured
-    public func logMessage(
+    public func log( // swiftlint:disable:this function_parameter_count
         _ message: String,
         level: LogLevel,
+        category: String?,
         file: StaticString,
+        fun: StaticString,
         line: UInt
     ) {
         loggers.forEach { logger in
-            logger.logMessage(message, level: level, file: file, line: line)
+            logger.log(message, level: level, category: category, file: file, fun: fun, line: line)
         }
     }
 }

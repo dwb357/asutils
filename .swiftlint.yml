@@ -12,7 +12,7 @@ disabled_rules: # rule identifiers turned on by default to exclude from running
   - no_grouping_extension
   - unused_capture_list
   - inert_defer
-  - anyobject_protocol
+  - contrasted_opening_brace
 
 analyzer_rules: # rules run by `swiftlint analyze`
   - explicit_self
@@ -39,10 +39,12 @@ strict: false
 # additionally they can set excluded names
 type_name:
   min_length: 4
+  excluded:
+    - Log
 
 identifier_name:
   min_length: 3
-  excluded: # excluded via string array
+  excluded:
     - URL
     - url
 

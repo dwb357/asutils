@@ -39,14 +39,14 @@ private class MockInputStream: InputStream {
     }
 }
 
-@Test func outputStreamUseOpensAndCloses() {
+@Test func outputStreamUseOpensAndCloses() throws {
     let expect = MockOutputStream()
     #expect(expect.opens == 0)
     #expect(expect.closes == 0)
 
-    expect.use { stream in
+    try expect.use { stream in
         #expect(expect === stream)
-        #expect((stream as! MockOutputStream).isOpen)
+        #expect(stream.isOpen)
     }
 
     #expect(expect.opens == 1)
@@ -54,14 +54,14 @@ private class MockInputStream: InputStream {
     #expect(expect.isOpen == false)
 }
 
-@Test func inputStreamUseOpensAndCloses() {
+@Test func inputStreamUseOpensAndCloses() throws {
     let expect = MockInputStream()
     #expect(expect.opens == 0)
     #expect(expect.closes == 0)
 
-    expect.use { stream in
+    try expect.use { stream in
         #expect(expect === stream)
-        #expect((stream as! MockInputStream).isOpen)
+        #expect(stream.isOpen)
     }
 
     #expect(expect.opens == 1)

@@ -14,10 +14,10 @@ public extension OutputStream {
     }
 
     /// write Data to a file
-    /// - parameters:
-    ///     - data: ``Data`` to write to file
-    /// - returns receiver
-    /// - throws Can throw any Error that ``OutputStream.write`` can throw
+    /// - Parameters:
+    ///     - data: `Data` to write to file
+    /// - Returns receiver
+    /// - Throws Can throw any Error that `OutputStream.write(_:_)` can throw
     @discardableResult
     func write(_ data: Data) throws -> Self {
         try data.withUnsafeBytes { rawBuffer in
@@ -37,13 +37,13 @@ public extension OutputStream {
     }
 
     /// write String to a file
-    /// - parameters:
-    ///     - string: ``String`` to convert and write to file
-    ///     - using: ``String.Encoding`` to use
-    ///     - allowLossyConversion: true to allow lossy conversion
-    /// - returns receiver
-    /// - throws Can throw any `Error` that ``OutputStream.write`` can throw
-    /// - throws ``StreamError.invalidStringConversion`` if `string` cannot be converted using the encoding `using`.
+    /// - Parameters:
+    ///     - string: `String` to convert and write to file
+    ///     - encoding: `String.Encoding` to use
+    ///     - allowLossy: true to allow lossy conversion
+    /// - Returns receiver
+    /// - Throws Can throw any `Error` that `OutputStream.write` can throw
+    /// - Throws `StreamError.invalidStringConversion` if `string` cannot be converted using the encoding `using`.
     @discardableResult
     func write(
         _ string: String,
@@ -54,6 +54,20 @@ public extension OutputStream {
             throw StreamError.invalidStringConversion
         }
 
+        return try write(data)
+    }
+
+    /// Write `Encodable` data to an `OutputStream`
+    /// - Parameters
+    ///     - value: Value to be written
+    ///     - encoder: `JSONEncoder` to be used for encoding. A default encoder is used if none is provided.
+    /// - Returns: receiver
+    /// - Throws: Can thrown any `Error` that `OutputStream.write` or `JSONEncoder.encode` can throw.
+    func write<T: Encodable>(
+        _ value: T,
+        encoder: JSONEncoder = .init()
+    ) throws -> Self {
+        let data = try encoder.encode(value)
         return try write(data)
     }
 }

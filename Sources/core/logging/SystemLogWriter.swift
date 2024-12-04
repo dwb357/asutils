@@ -7,30 +7,36 @@ import Foundation
 import os
 
 public struct SystemLogWriter: LogWriter {
+    let format: LogFormatter
     let logger: Logger
 
-    init(logger: Logger = Logger()) {
+    init(logger: Logger = Logger(), format: @escaping LogFormatter = LogFormatters.default) {
         self.logger = logger
+        self.format = format
     }
 
-    public func logMessage(
+    public func log( // swiftlint:disable:this function_parameter_count
         _ message: String,
         level: LogLevel,
+        category: String?,
         file: StaticString,
+        fun: StaticString,
         line: UInt
     ) {
+        let message = format(message, level, category, file, fun, line)
+
         switch level {
         case .debug, .trace:
-            logger.debug("\(format(message, level: level, file: file, line: line))")
+            logger.debug("\(message)")
 
         case .info:
-            logger.info("\(format(message, level: level, file: file, line: line))")
+            logger.info("\(message)")
 
         case .warning:
-            logger.warning("\(format(message, level: level, file: file, line: line))")
+            logger.warning("\(message)")
 
         case .error, .fatal:
-            logger.error("\(format(message, level: level, file: file, line: line))")
+            logger.error("\(message)")
         }
     }
 }

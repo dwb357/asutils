@@ -12,5 +12,5 @@ import asutils_core
 
     Date.provider = { now }
 
-    #expect(Date.current == now)
+    #expect(Date.provided == now)
 }

@@ -17,13 +17,30 @@ struct FilteredLogWriterTests {
     func filterByLevel(level: LogLevel, target: LogLevel) async throws {
         let mock = MockLogWriter(policy: .relaxed)
         let writer = mock.filter(level: target)
+        let category = "Test"
         let file: StaticString = #file
+        let function: StaticString = #function
         let line: UInt = #line
 
-        writer.logMessage("Hello World", level: level, file: file, line: line)
+        writer
+            .log(
+                "Hello World",
+                level: level,
+                category: category,
+                file: file,
+                fun: function,
+                line: line
+            )
 
         verify(mock)
-            .logMessage(.value("Hello World"), level: .value(level), file: .value(file), line: .value(line))
+            .log(
+                .value("Hello World"),
+                level: .value(level),
+                category: .value(category),
+                file: .value(file),
+                fun: .value(function),
+                line: .value(line)
+            )
             .called(level >= target ? 1 : 0)
     }
 }

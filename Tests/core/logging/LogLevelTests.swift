@@ -8,9 +8,11 @@ import Testing
 
 struct LogLevelTests {
 
-    @Test(arguments: LogLevel.allCases)
-    func testDescription(level: LogLevel) {
-        #expect(level.description == level.rawValue.uppercased())
+    @Test(
+        arguments: zip(LogLevel.allCases, ["TRACE", "DEBUG", "INFO", "WARNING", "ERROR", "FATAL"])
+    )
+    func testDescription(level: LogLevel, label: String) {
+        #expect(level.description == label)
     }
 
     @Test(arguments: LogLevel.allCases, LogLevel.allCases)
