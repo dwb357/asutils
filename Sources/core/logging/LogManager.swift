@@ -18,12 +18,6 @@ import Foundation
 ///         PrintLogWriter()
 ///     ).filter(minLevel: .warning)
 ///
-/// The format of logged messages can be updated by specifying a ``LogFormatter``:
-///
-///     LogManager.logger = SystemLogWriter(format: LogFormatters.long)
-///
-/// Most ``LogWriter`` implementations support the specification of a ``LogFormatter``.
-///
 /// `SharedLogWriter` and `filter` can also be combined to log different categories of messages
 /// using different loggers:
 ///
@@ -39,15 +33,25 @@ import Foundation
 ///         static func error(
 ///             _ message: String,
 ///             file: StaticString = #file,
-///             fun: StaticString = #fun,
 ///             line: UInt = #line
 ///         ) {
-///             LogManager.error(message, category: "CORE", file: file, fun: fun, line: line)
+///             LogManager.error(message, category: "CORE", file: file, line: line)
 ///         }
 ///     }
 ///
 ///     Log.error("An error occured")
 ///
+/// The format of logged messages can be set with the ``LogWriter.format`` function:
+///
+///     LogManager.logger = SystemLogWriter().format(.simple)
+///
+/// As with filter, different loggers can use different formats:
+///
+///     LogManager.logger = SharedLogWriter(
+///         FileLogWriter("log").format(.full),
+///         PrintLogWriter().format(.simple)
+///     )
+///     
 public enum LogManager {
     /// Default ``LogWriter`` for logging functions below.
     public nonisolated(unsafe) static var logger: LogWriter = PrintLogWriter()
@@ -65,16 +69,16 @@ public enum LogManager {
         level: LogLevel,
         category: String? = nil,
         file: StaticString = #file,
-        fun: StaticString = #function,
         line: UInt = #line
     ) {
         logger.log(
-            message,
-            level: level,
-            category: category,
-            file: file,
-            fun: fun,
-            line: line
+            record: LogRecord(
+                message: message,
+                level: level,
+                category: category,
+                file: file,
+                line: line
+            )
         )
     }
 
@@ -83,13 +87,11 @@ public enum LogManager {
     ///   - message: message to log
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
-    ///   - fun: function where message was generated
     ///   - line: line of trace call
     static func trace(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
-        fun: StaticString = #function,
         line: UInt = #line
     ) {
         log(
@@ -97,7 +99,6 @@ public enum LogManager {
             level: .trace,
             category: category,
             file: file,
-            fun: fun,
             line: line
         )
     }
@@ -107,13 +108,11 @@ public enum LogManager {
     ///   - message: message to log
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
-    ///   - fun: function where message was generated
     ///   - line: line of trace call
     static func debug(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
-        fun: StaticString = #function,
         line: UInt = #line
     ) {
         log(
@@ -121,7 +120,6 @@ public enum LogManager {
             level: .debug,
             category: category,
             file: file,
-            fun: fun,
             line: line
         )
     }
@@ -131,13 +129,11 @@ public enum LogManager {
     ///   - message: message to log
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
-    ///   - fun: function where message was generated
     ///   - line: line of trace call
     static func info(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
-        fun: StaticString = #function,
         line: UInt = #line
     ) {
         log(
@@ -145,7 +141,6 @@ public enum LogManager {
             level: .info,
             category: category,
             file: file,
-            fun: fun,
             line: line
         )
     }
@@ -155,13 +150,11 @@ public enum LogManager {
     ///   - message: message to log
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
-    ///   - fun: function where message was generated
     ///   - line: line of trace call
     static func warning(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
-        fun: StaticString = #function,
         line: UInt = #line
     ) {
         log(
@@ -169,7 +162,6 @@ public enum LogManager {
             level: .warning,
             category: category,
             file: file,
-            fun: fun,
             line: line
         )
     }
@@ -179,13 +171,11 @@ public enum LogManager {
     ///   - message: message to log
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
-    ///   - fun: function where message was generated
     ///   - line: line of trace call
     static func error(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
-        fun: StaticString = #function,
         line: UInt = #line
     ) {
         log(
@@ -193,7 +183,6 @@ public enum LogManager {
             level: .error,
             category: category,
             file: file,
-            fun: fun,
             line: line
         )
     }
@@ -203,13 +192,11 @@ public enum LogManager {
     ///   - message: message to log
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
-    ///   - fun: function where message was generated
     ///   - line: line of trace call
     static func fatal(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
-        fun: StaticString = #function,
         line: UInt = #line
     ) {
         log(
@@ -217,7 +204,6 @@ public enum LogManager {
             level: .fatal,
             category: category,
             file: file,
-            fun: fun,
             line: line
         )
     }

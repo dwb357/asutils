@@ -16,28 +16,14 @@ import Foundation
 ///     will the message be written via `writer`.
 ///     - writer: underlying writer to use. Messages matching `predicate` will be output using `writer`
 public struct LogFilter: LogWriter {
-    public typealias Predicate = (String, LogLevel, String?, StaticString, StaticString, UInt) -> Bool
+    public typealias Predicate = (LogRecord) -> Bool
 
     let predicate: Predicate
     let writer: LogWriter
 
-    public func log( // swiftlint:disable:this function_parameter_count
-        _ message: String,
-        level: LogLevel,
-        category: String?,
-        file: StaticString,
-        fun: StaticString,
-        line: UInt
-    ) {
-        if predicate(message, level, category, file, fun, line) {
-            writer.log(
-                message,
-                level: level,
-                category: category,
-                file: file,
-                fun: fun,
-                line: line
-            )
+    public func log(record: LogRecord) {
+        if predicate(record) {
+            writer.log(record: record)
         }
     }
 }
@@ -54,16 +40,16 @@ public extension LogWriter {
     /// Apply a filter to a ``LogWriter``. The receiver `LogWriter` will only log messages with a level >= `level`
     /// - parameter minLevel: Minimum `LogLevel` to log
     func filter(level minLevel: LogLevel) -> LogWriter {
-        filter { _, level, _, _, _, _ in
-            level >= minLevel
+        filter { record in
+            record.level >= minLevel
         }
     }
 
     /// Apply a filter to a ``LogWriter`` based on only passing messages in a list of categories.
     /// - parameter categories: list of categories to be logged
     func filter(categories: String...) -> LogWriter {
-        filter { _, _, category, _, _, _ in
-            category.map(categories.contains) ?? false
+        filter { record in
+            record.category.map(categories.contains) ?? false
         }
     }
 }

@@ -12,11 +12,11 @@ let package = Package(
     products: [
         .library(name: "mockables", targets: [ "mockables" ]),
         .library(name: "asutils-core", targets: [ "asutils-core" ]),
-        .library(name: "asutils-ui", targets: [ "asutils-ui" ]),
+        .library(name: "asutils-ui", targets: [ "asutils-ui" ])
     ],
     dependencies: [
-        .package(url: "https://github.com/Kolos65/Mockable", from: "0.0.11"),
-        .package(url: "https://github.com/realm/SwiftLint", from: "0.55.1"),
+        .package(url: "https://github.com/Kolos65/Mockable", from: "0.1.1"),
+        .package(url: "https://github.com/realm/SwiftLint", from: "0.57.1")
     ],
     targets: [
         .target(
