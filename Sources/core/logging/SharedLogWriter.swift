@@ -5,7 +5,7 @@
 
 import Foundation
 
-/// Log messages by logging them to each of the children ``LogWriter``s.
+/// Log messages by logging them to each of the child ``LogWriter``s.
 public class SharedLogWriter: LogWriter {
     let loggers: [LogWriter]
 
@@ -16,23 +16,12 @@ public class SharedLogWriter: LogWriter {
         self.loggers = loggers
     }
 
-    /// Log a message by logging it to each target ``LogWriter`` defined at initialization time.
-    ///
+    /// Write a message to all child logs
     /// - parameters:
-    ///     - message: detailed message to log
-    ///     - level: level of message to log
-    ///     - file: file where error occured
-    ///     - line: line where error occured
-    public func log( // swiftlint:disable:this function_parameter_count
-        _ message: String,
-        level: LogLevel,
-        category: String?,
-        file: StaticString,
-        fun: StaticString,
-        line: UInt
-    ) {
+    ///     - record: ``LogRecord`` to log
+    public func log(record: LogRecord) {
         loggers.forEach { logger in
-            logger.log(message, level: level, category: category, file: file, fun: fun, line: line)
+            logger.log(record: record)
         }
     }
 }

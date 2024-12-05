@@ -24,55 +24,34 @@ public struct LogFormatter {
     nonisolated(unsafe) public static var `default` = Self.medium
 
     /// Format log messages with just the level, category, and message
-    nonisolated(unsafe) static let simple = Self { message, level, category, _, _, _ in
-        let category = category.map { "[\($0)]" } ?? ""
+    nonisolated(unsafe) static let simple = Self { record in
+        let category = record.category.map { "[\($0)] " } ?? ""
 
-        return "\(timeStamp) \(level): \(category)\(message)"
+        return "\(record.level): \(category)\(record.message)"
     }
 
     /// Format log messages with level, category, message, and function name
-    nonisolated(unsafe) static let medium = Self { message, level, category, _, fun, _ in
-        let category = category.map { "[\($0)]" } ?? ""
-        let fun = fun.withoutParameters
+    nonisolated(unsafe) static let medium = Self { record in
+        let category = record.category.map { "[\($0)] " } ?? ""
 
-        return "\(timeStamp) \(level): \(category) \(fun): \(message)"
+        return "\(timeStamp) \(record.level): \(category)\(record.message)"
     }
 
     /// Format log messages with level, category, message, function name, and file location
-    nonisolated(unsafe) static let full = Self { message, level, category, file, fun, line in
-        let category = category.map { "[\($0)]" } ?? ""
-        let file = file.lastPathComponent
-        let fun = fun.withoutParameters
+    nonisolated(unsafe) static let full = Self { record in
+        let category = record.category.map { "[\($0)] " } ?? ""
 
-        return "\(timeStamp) \(level): \(category) [\(file):\(line)]: \(fun): \(message)"
+        return "\(timeStamp) \(record.level): \(category) \(record.file):\(record.line): \(record.message)"
     }
 
-    private let format: (
-        _ message: String,
-        _ level: LogLevel,
-        _ category: String?,
-        _ file: StaticString,
-        _ fun: StaticString,
-        _ line: UInt
-    ) -> String
+    let formatter: (_ record: LogRecord) -> String
 
     /// Format a message to be written to the logger.
     /// - parameters:
-    ///     - message: message to log
-    ///     - level: `LogLevel` for this message
-    ///     - category: category for this message
-    ///     - file: file where message was generated
-    ///     - line: line where message was generated
-    /// - returns: Formatted message to log
-    func callAsFunction( // swiftlint:disable:this function_parameter_count
-        _ message: String,
-        level: LogLevel,
-        category: String?,
-        file: StaticString,
-        fun: StaticString,
-        line: UInt
-    ) -> String {
-        format(message, level, category, file, fun, line)
+    ///     - record: message details to log
+    /// - returns: updated ``LogRecord`` to log
+    func callAsFunction(record: LogRecord) -> LogRecord {
+        record.copy(formatted: formatter(record))
     }
 }
 

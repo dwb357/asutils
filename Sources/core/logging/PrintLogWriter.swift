@@ -5,26 +5,12 @@
 
 import Foundation
 
+/// Log messages by printing them using `Swift.print`
 public struct PrintLogWriter: LogWriter {
-    let format = LogFormatter.default
-
-    public func log( // swiftlint:disable:this function_parameter_count
-        _ message: String,
-        level: LogLevel,
-        category: String?,
-        file: StaticString,
-        fun: StaticString,
-        line: UInt
-    ) {
-        print(
-            format(
-                message,
-                level: level,
-                category: category,
-                file: file,
-                fun: fun,
-                line: line
-            )
-        )
+    /// Write a message to this log
+    /// - parameters:
+    ///     - record: ``LogRecord`` to log
+    public func log(record: LogRecord) {
+        print(record.formatted)
     }
 }

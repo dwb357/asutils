@@ -6,7 +6,7 @@
 import Foundation
 
 /// Signficance or severity of a log message
-public enum LogLevel: Int, Sendable, CaseIterable {
+public enum LogLevel: String, Sendable, CaseIterable, Equatable {
     /// detailed flow tracing
     case trace
     /// intended for logging detailed information about the system for debugging purposes.
@@ -24,30 +24,16 @@ public enum LogLevel: Int, Sendable, CaseIterable {
 extension LogLevel: CustomStringConvertible {
     /// Implement `CustomStringConvertible`
     public var description: String {
-        switch self {
-        case .trace:
-            return "TRACE"
-
-        case .debug:
-            return "DEBUG"
-
-        case .info:
-            return "INFO"
-
-        case .warning:
-            return "WARNING"
-
-        case .error:
-            return "ERROR"
-
-        case .fatal:
-            return "FATAL"
-        }
+        rawValue.uppercased()
     }
 }
 
 extension LogLevel: Comparable {
     public static func < (lhs: LogLevel, rhs: LogLevel) -> Bool {
-        lhs.rawValue < rhs.rawValue
+        guard let lhs = allCases.firstIndex(of: lhs), let rhs = allCases.firstIndex(of: rhs) else {
+            return false
+        }
+
+        return lhs < rhs
     }
 }
