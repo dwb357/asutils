@@ -10,11 +10,11 @@ import os
 /// - parameter logger: Target `Logger` to utilize when logging messages.
 @available(iOS 14.0, *)
 public struct SystemLogWriter: LogWriter {
-    let logger: Logger
+    private let logger: Logger
 
     /// Create a ``LogWriter`` to log messages to a system logger.
     /// - parameter logger: target ``Logger`` for all messages.
-    init(logger: Logger = Logger()) {
+    public init(logger: Logger = Logger()) {
         self.logger = logger
     }
 
@@ -23,8 +23,11 @@ public struct SystemLogWriter: LogWriter {
     ///     - record: ``LogRecord`` to log
     public func log(record: LogRecord) {
         switch record.level {
-        case .debug, .trace:
+        case .debug:
             logger.debug("\(record.formatted)")
+
+        case .trace:
+            logger.trace("\(record.formatted)")
 
         case .info:
             logger.info("\(record.formatted)")
@@ -32,8 +35,11 @@ public struct SystemLogWriter: LogWriter {
         case .warning:
             logger.warning("\(record.formatted)")
 
-        case .error, .fatal:
+        case .error:
             logger.error("\(record.formatted)")
+
+        case .fatal:
+            logger.critical("\(record.formatted)")
         }
     }
 }

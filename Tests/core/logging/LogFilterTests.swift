@@ -3,7 +3,7 @@
 // All rights reserved.
 //
 
-@testable import asutils_core
+import asutils_core
 import Mockable
 import Testing
 

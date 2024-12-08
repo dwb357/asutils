@@ -19,12 +19,17 @@ private struct LogFormatterWriter: LogWriter {
     }
 }
 
-extension LogWriter {
+public extension LogWriter {
     /// Attach a formatter to the receiving ``LogWriter``
+    /// - parameter formatter: ``LogFormatter`` to use formatting messages
+    /// to the receiver.
     func format(_ formatter: LogFormatter) -> LogWriter {
         LogFormatterWriter(writer: self, formatter: formatter)
     }
 
+    /// Attach a formatting function to the receiving ``LogWriter``
+    /// - parameter formatter: function to use formatting messages
+    /// to the receiver.
     func format(_ formatter: @escaping (LogRecord) -> String) -> LogWriter {
         format(LogFormatter(formatter: formatter))
     }

@@ -3,11 +3,11 @@
 // All rights reserved.
 //
 
-@testable import asutils_core
+import asutils_core
 import Mockable
 import Testing
 
-struct SharedLogWriterTests {
+struct ForkLogWriterTests {
     init() {
         Matcher.register(StaticString.self) { $0.description == $1.description }
     }
@@ -16,7 +16,7 @@ struct SharedLogWriterTests {
     func proxyDistributesLogMessages(level: LogLevel) {
         let mock1 = MockLogWriter(policy: .relaxed)
         let mock2 = MockLogWriter(policy: .relaxed)
-        let proxy = SharedLogWriter(mock1, mock2)
+        let proxy = ForkLogWriter(mock1, mock2)
         let record = LogRecord(
             message: "Message",
             level: level,

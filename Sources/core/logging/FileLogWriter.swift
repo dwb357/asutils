@@ -10,6 +10,14 @@ import Foundation
 public struct FileLogWriter: LogWriter {
     let path: URL
 
+    /// Construct a new `FileLogWriter` to log to ``path``.
+    /// - parameter path: file path for logging
+    public init(path: URL) {
+        assert(path.isFileURL)
+
+        self.path = path
+    }
+
     /// Implement ``LogWriter.log(record:)``
     /// - parameter record: message details to record``
     public func log(record: LogRecord) {

@@ -54,23 +54,3 @@ public struct LogFormatter {
         record.copy(formatted: formatter(record))
     }
 }
-
-private extension StaticString {
-    var lastPathComponent: String {
-        let string = self.description
-
-        return string.split(separator: "/").last.map(String.init) ?? string
-    }
-
-    var withoutParameters: String {
-        var text = self.description
-
-        guard let lhs = text.firstIndex(of: "("), let rhs = text.lastIndex(of: ")") else {
-            return text
-        }
-
-        text.removeSubrange(text.index(after: lhs)..<rhs)
-
-        return String(text)
-    }
-}

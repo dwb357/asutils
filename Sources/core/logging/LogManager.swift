@@ -9,7 +9,7 @@ import Foundation
 ///
 /// Example usage:
 ///
-///     LogManager.logger = SystemLogWriter().filter(minLevel: .warning)
+///     LogManager(logger: SystemLogWriter().filter(minLevel: .warning))
 ///
 /// or to log to both a file and the print console:
 ///
@@ -21,21 +21,24 @@ import Foundation
 /// `SharedLogWriter` and `filter` can also be combined to log different categories of messages
 /// using different loggers:
 ///
-///     LogManager.logger = SharedLogWriter(
+///     LogManager(logger: SharedLogWriter(
 ///         FileLogWriter("log"),
 ///         SystemLogWriter().filter(categories: "CORE")
-///     )
-///     
+///     ))
+///
 /// The optional `category` parameter can be used to distinguish between messages arising
 /// in different modules:
 ///
 ///     class Log {
+///         static let manager = LogManager(logger: SystemLogWriter())
+///         static let category = "CORE"
+///
 ///         static func error(
 ///             _ message: String,
 ///             file: StaticString = #file,
 ///             line: UInt = #line
 ///         ) {
-///             LogManager.error(message, category: "CORE", file: file, line: line)
+///             manager.error(message, category: category, file: file, line: line)
 ///         }
 ///     }
 ///
@@ -43,18 +46,24 @@ import Foundation
 ///
 /// The format of logged messages can be set with the ``LogWriter.format`` function:
 ///
-///     LogManager.logger = SystemLogWriter().format(.simple)
+///     LogManager(logger: SystemLogWriter().format(.simple))
 ///
 /// As with filter, different loggers can use different formats:
 ///
-///     LogManager.logger = SharedLogWriter(
+///     LogManager(logger: SharedLogWriter(
 ///         FileLogWriter("log").format(.full),
 ///         PrintLogWriter().format(.simple)
-///     )
-///     
-public enum LogManager {
-    /// Default ``LogWriter`` for logging functions below.
-    public nonisolated(unsafe) static var logger: LogWriter = PrintLogWriter()
+///     ))
+///
+public struct LogManager {
+    private let logger: LogWriter
+
+    /// Construct a new `LogManager` writing to ``logger``
+    /// - parameter logger: Target ``LogWriter`` for messages logged
+    /// using this manager.
+    public init(logger: LogWriter = PrintLogWriter()) {
+        self.logger = logger
+    }
 
     /// Write a message to this log
     /// - parameters:
@@ -64,7 +73,7 @@ public enum LogManager {
     ///     - file: file where message was generated
     ///     - fun: function where message was generated
     ///     - line: line where message was generated
-    static func log(
+    public func log(
         _ message: String,
         level: LogLevel,
         category: String? = nil,
@@ -88,7 +97,7 @@ public enum LogManager {
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
     ///   - line: line of trace call
-    static func trace(
+    public func trace(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
@@ -109,7 +118,7 @@ public enum LogManager {
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
     ///   - line: line of trace call
-    static func debug(
+    public func debug(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
@@ -130,7 +139,7 @@ public enum LogManager {
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
     ///   - line: line of trace call
-    static func info(
+    public func info(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
@@ -151,7 +160,7 @@ public enum LogManager {
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
     ///   - line: line of trace call
-    static func warning(
+    public func warning(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
@@ -172,7 +181,7 @@ public enum LogManager {
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
     ///   - line: line of trace call
-    static func error(
+    public func error(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
@@ -193,7 +202,7 @@ public enum LogManager {
     ///   - category: category with which to tag the message
     ///   - file: file of trace call
     ///   - line: line of trace call
-    static func fatal(
+    public func fatal(
         _ message: String,
         category: String? = nil,
         file: StaticString = #file,
