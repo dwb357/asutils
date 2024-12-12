@@ -7,22 +7,38 @@ import asutils_core
 import Mockable
 import Testing
 
-class LogManagerTests {
-    lazy var logger = MockLogWriter(policy: .relaxed)
-    lazy var manager = LogManager(logger: logger)
-    let file: StaticString = #file
-    let line: UInt = #line
-    let message = "Hello, world!"
+private enum Log: StaticLogger {
+    nonisolated(unsafe) static var instance: LogWriter?
+    nonisolated(unsafe) static var category: String?
+}
+
+class StaticLoggerTests {
+    private let logger = MockLogWriter(policy: .relaxed)
+    private let category = "Test"
+    private let file: StaticString = #file
+    private let line: UInt = #line
+    private let message = "Hello, world!"
+
+    init() {
+        print("init")
+        Log.instance = logger
+        Log.category = category
+    }
+
+    deinit {
+        Log.instance = nil
+        Log.category = nil
+    }
 
     @Test func trace() {
-        manager.trace(message, file: file, line: line)
+        Log.trace(message, file: file, line: line)
 
         verify(logger)
             .log(record: .value(
                 LogRecord(
                     message: message,
                     level: .trace,
-                    category: nil,
+                    category: category,
                     file: file,
                     line: line,
                     formatted: message
@@ -32,14 +48,14 @@ class LogManagerTests {
     }
 
     @Test func debug() {
-        manager.debug(message, file: file, line: line)
+        Log.debug(message, file: file, line: line)
 
         verify(logger)
             .log(record: .value(
                 LogRecord(
                     message: message,
                     level: .debug,
-                    category: nil,
+                    category: category,
                     file: file,
                     line: line,
                     formatted: message
@@ -49,14 +65,14 @@ class LogManagerTests {
     }
 
     @Test func info() {
-        manager.info(message, file: file, line: line)
+        Log.info(message, file: file, line: line)
 
         verify(logger)
             .log(record: .value(
                 LogRecord(
                     message: message,
                     level: .info,
-                    category: nil,
+                    category: category,
                     file: file,
                     line: line,
                     formatted: message
@@ -66,14 +82,14 @@ class LogManagerTests {
     }
 
     @Test func warning() {
-        manager.warning(message, file: file, line: line)
+        Log.warning(message, file: file, line: line)
 
         verify(logger)
             .log(record: .value(
                 LogRecord(
                     message: message,
                     level: .warning,
-                    category: nil,
+                    category: category,
                     file: file,
                     line: line,
                     formatted: message
@@ -83,14 +99,14 @@ class LogManagerTests {
     }
 
     @Test func error() {
-        manager.error(message, file: file, line: line)
+        Log.error(message, file: file, line: line)
 
         verify(logger)
             .log(record: .value(
                 LogRecord(
                     message: message,
                     level: .error,
-                    category: nil,
+                    category: category,
                     file: file,
                     line: line,
                     formatted: message
@@ -100,14 +116,14 @@ class LogManagerTests {
     }
 
     @Test func fatal() {
-        manager.fatal(message, file: file, line: line)
+        Log.fatal(message, file: file, line: line)
 
         verify(logger)
             .log(record: .value(
                 LogRecord(
                     message: message,
                     level: .fatal,
-                    category: nil,
+                    category: category,
                     file: file,
                     line: line,
                     formatted: message
