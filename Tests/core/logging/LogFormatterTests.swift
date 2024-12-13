@@ -8,7 +8,8 @@ import Mockable
 import Testing
 
 struct LogFormatterTests {
-    @Test func formatExtensionApplies() {
+    @Test
+    func formatExtensionApplies() {
         let mock = MockLogWriter(policy: .relaxed)
         let formatted = "Some Formatted Text"
         let writer = mock.format { _ in formatted }

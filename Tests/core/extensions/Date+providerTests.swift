@@ -3,11 +3,12 @@
 // All rights reserved.
 //
 
-import Testing
-import Foundation
 import asutils_core
+import Foundation
+import Testing
 
-@Test func testDateProvider() {
+@Test
+func testDateProvider() {
     let now = Date(timeIntervalSinceNow: -100)
 
     Date.provider = { now }

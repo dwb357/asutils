@@ -20,11 +20,11 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "mockables",
+            name: "asutils-core",
             dependencies: [
                 .product(name: "Mockable", package: "Mockable")
             ],
-            path: "Sources/mockables",
+            path: "Sources/core",
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug))
             ],
@@ -33,11 +33,18 @@ let package = Package(
             ]
         ),
         .target(
-            name: "asutils-core",
+            name: "asutils-ui",
+            path: "Sources/ui",
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
+            ]
+        ),
+        .target(
+            name: "mockables",
             dependencies: [
                 .product(name: "Mockable", package: "Mockable")
             ],
-            path: "Sources/core",
+            path: "Sources/mockables",
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug))
             ],
@@ -54,11 +61,7 @@ let package = Package(
             path: "Tests/core",
             swiftSettings: [
                 .define("MOCKING", .when(configuration: .debug))
-            ]
-        ),
-        .target(
-            name: "asutils-ui",
-            path: "Sources/ui",
+            ],
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
             ]
@@ -66,7 +69,10 @@ let package = Package(
         .testTarget(
             name: "asutils-ui-tests",
             dependencies: ["asutils-ui"],
-            path: "Tests/ui"
+            path: "Tests/ui",
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
+            ]
         )
     ]
 )

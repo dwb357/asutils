@@ -21,13 +21,9 @@ analyzer_rules: # rules run by `swiftlint analyze`
 # command line will be ignored.
 included: 
   - Sources
+  - Tests
 
 excluded: # case-sensitive paths to ignore during linting. Takes precedence over `included`
-  - Carthage
-  - Pods
-  - Sources/ExcludedFolder
-  - Sources/ExcludedFile.swift
-  - Sources/*/ExcludedFile.swift # exclude files with a wildcard
 
 # If true, SwiftLint will not fail if no lintable files are found.
 allow_zero_lintable_files: false
@@ -51,8 +47,8 @@ identifier_name:
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, codeclimate, junit, html, emoji, sonarqube, markdown, github-actions-logging, summary)
 
 file_header:
-  required_pattern: |
-                    \/\/
-                    \/\/ Copyright © 2024, David W. Berry
-                    \/\/ All rights reserved.
-                    \/\/
+  required_string: |
+                   //
+                   // Copyright © 2024, David W. Berry
+                   // All rights reserved.
+                   //

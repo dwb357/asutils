@@ -7,7 +7,7 @@ import Foundation
 
 extension Data {
     static func random(count: Int, in generator: inout RandomNumberGenerator) -> Self {
-        return Data((0 ..< count).map { _ in generator.next() as UInt8 })
+        Data((0 ..< count).map { _ in generator.next() as UInt8 })
     }
 
     static func random(count: Int) -> Self {

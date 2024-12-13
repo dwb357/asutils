@@ -3,12 +3,14 @@
 // All rights reserved.
 //
 
-import Testing
-import Foundation
 import asutils_core
+import Foundation
+import Testing
 
-@Test func testDataWrite() throws {
-    let data = Data.random(count: 64)
+@Test
+func testDataWrite() throws {
+    let dataSize = 64
+    let data = Data.random(count: dataSize)
 
     let stream = OutputStream(toMemory: ())
 
@@ -20,12 +22,13 @@ import asutils_core
         stream.close()
     }
 
-    let written = stream.property(forKey: Stream.PropertyKey.dataWrittenToMemoryStreamKey) as! Data
+    let written = stream.property(forKey: Stream.PropertyKey.dataWrittenToMemoryStreamKey) as? Data
 
     #expect(data == written)
 }
 
-@Test func testStringWrite() throws {
+@Test
+func testStringWrite() throws {
     let stream = OutputStream(toMemory: ())
 
     try stream.use { stream in
@@ -36,7 +39,7 @@ import asutils_core
         stream.close()
     }
 
-    let written = stream.property(forKey: Stream.PropertyKey.dataWrittenToMemoryStreamKey) as! Data
+    let written = stream.property(forKey: Stream.PropertyKey.dataWrittenToMemoryStreamKey) as? Data
 
-    #expect("Hello World!\n".data(using: .utf8) == written)
+    #expect(Data("Hello World!\n".utf8) == written)
 }
