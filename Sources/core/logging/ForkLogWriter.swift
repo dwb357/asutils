@@ -6,7 +6,7 @@
 import Foundation
 
 /// Log messages by logging them to each of the child ``LogWriter``s.
-public class ForkLogWriter: LogWriter {
+public struct ForkLogWriter: LogWriter {
     private let loggers: [LogWriter]
 
     /// Create a new ProxyLogWriter to forward messages to a given list of ``LogWriter``
