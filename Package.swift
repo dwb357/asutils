@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 5.9
 //  ASUtils
 //
 //  © Copyright 2024 David W. Berry. All Rights Reserved.
@@ -75,5 +75,6 @@ let package = Package(
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
             ]
         )
-    ]
+    ],
+    swiftLanguageVersions: [.version("6"), .v5]
 )
