@@ -16,12 +16,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: swift-actions/setup-swift@v2
-      with:
-        swift-version: "6.0"
+
+    - name: Setup Swift
+      uses: swift-actions/setup-swift@v2
+
     - name: Build
       run: swift build -v
+
     - name: Run tests
       run: swift test -v
+
     - name: Run SwiftLint
       run: swift package plugin swiftlint
