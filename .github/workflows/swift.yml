@@ -31,3 +31,11 @@ jobs:
 
     - name: Run SwiftLint
       run: swift package plugin swiftlint
+
+    - name: Build Documentation
+      run: swift package generate-documentation
+
+    - name: Upload Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: .build/plugins/Swift-DocC/outputs/
