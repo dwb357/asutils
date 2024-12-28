@@ -3,7 +3,7 @@
 // All rights reserved.
 //
 
-@testable import asutils_core
+import ASCore
 import Foundation
 import Testing
 

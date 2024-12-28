@@ -3,7 +3,7 @@
 // All rights reserved.
 //
 
-@testable import asutils_ui
+@testable import ASUIKit
 import Testing
 
 struct AnimationSequenceTests {

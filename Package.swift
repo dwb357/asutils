@@ -11,8 +11,8 @@ let package = Package(
     platforms: [.iOS(.v15), .macOS(.v13)],
     products: [
         .library(name: "mockables", targets: [ "mockables" ]),
-        .library(name: "asutils-core", targets: [ "asutils-core" ]),
-        .library(name: "asutils-ui", targets: [ "asutils-ui" ])
+        .library(name: "ASCore", targets: [ "ASCore" ]),
+        .library(name: "ASUIKit", targets: [ "ASUIKit" ])
     ],
     dependencies: [
         .package(url: "https://github.com/Kolos65/Mockable", from: "0.1.1"),
@@ -21,7 +21,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "asutils-core",
+            name: "ASCore",
             dependencies: [
                 .product(name: "Mockable", package: "Mockable")
             ],
@@ -34,7 +34,7 @@ let package = Package(
             ]
         ),
         .target(
-            name: "asutils-ui",
+            name: "ASUIKit",
             path: "Sources/ui",
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
@@ -54,9 +54,9 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "asutils-core-tests",
+            name: "ASCore-tests",
             dependencies: [
-                "asutils-core",
+                "ASCore",
                 .product(name: "Mockable", package: "Mockable")
             ],
             path: "Tests/core",
@@ -68,8 +68,8 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "asutils-ui-tests",
-            dependencies: ["asutils-ui"],
+            name: "ASUIKit-tests",
+            dependencies: ["ASUIKit"],
             path: "Tests/ui",
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")

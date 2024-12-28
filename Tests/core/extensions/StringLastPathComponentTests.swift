@@ -3,7 +3,7 @@
 // All rights reserved.
 //
 
-@testable import asutils_core
+import ASCore
 import Testing
 
 struct StringLastPathComponentTests {

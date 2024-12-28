@@ -5,7 +5,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
     /// Return the last path component (separated by "/")
     var lastPathComponent: Self {
         split(separator: "/").last.map(String.init) ?? self
