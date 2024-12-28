@@ -68,7 +68,7 @@ public struct ToastModifier<Alert: View>: ViewModifier {
 }
 
 @available(iOS 16.0, *)
-extension View {
+public extension View {
     /// Display a toast message over the receiver.
     ///
     /// - parameters:
