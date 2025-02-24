@@ -6,12 +6,95 @@
 
 import PackageDescription
 
+@MainActor extension [Target.Dependency] {
+    static let common: Self = [
+        .product(name: "Mockable", package: "Mockable"),
+    ]
+}
+
+@MainActor extension [Target.PluginUsage] {
+    static let common: Self = [
+        .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint"),
+    ]
+}
+
+@MainActor extension [SwiftSetting] {
+    static let common: Self = [
+        .define("MOCKING", .when(configuration: .debug)),
+    ]
+}
+
+@MainActor extension Target {
+    static func library(
+        name: String,
+        dependencies: [PackageDescription.Target.Dependency] = [],
+        path: String? = nil,
+        exclude: [String] = [],
+        sources: [String]? = nil,
+        resources: [PackageDescription.Resource]? = nil,
+        publicHeadersPath: String? = nil,
+        packageAccess: Bool = true,
+        cSettings: [PackageDescription.CSetting]? = nil,
+        cxxSettings: [PackageDescription.CXXSetting]? = nil,
+        swiftSettings: [PackageDescription.SwiftSetting]? = nil,
+        linkerSettings: [PackageDescription.LinkerSetting]? = nil,
+        plugins: [PackageDescription.Target.PluginUsage]? = nil
+    ) -> PackageDescription.Target {
+        .target(
+            name: name,
+            dependencies: .common + dependencies,
+            path: path,
+            exclude: exclude,
+            sources: sources,
+            resources: resources,
+            publicHeadersPath: publicHeadersPath,
+            packageAccess: packageAccess,
+            cSettings: cSettings,
+            cxxSettings: cxxSettings,
+            swiftSettings: .common + (swiftSettings ?? []),
+            linkerSettings: linkerSettings,
+            plugins: plugins
+        )
+    }
+
+    public static func test(
+        name: String,
+        dependencies: [PackageDescription.Target.Dependency] = [],
+        path: String? = nil,
+        exclude: [String] = [],
+        sources: [String]? = nil,
+        resources: [PackageDescription.Resource]? = nil,
+        packageAccess: Bool = true,
+        cSettings: [PackageDescription.CSetting]? = nil,
+        cxxSettings: [PackageDescription.CXXSetting]? = nil,
+        swiftSettings: [PackageDescription.SwiftSetting]? = nil,
+        linkerSettings: [PackageDescription.LinkerSetting]? = nil,
+        plugins: [PackageDescription.Target.PluginUsage]? = nil
+    ) -> PackageDescription.Target {
+        .testTarget(
+            name: name + "-tests",
+            dependencies: [ .byName(name: name) ] + dependencies,
+            path: path ?? "Tests/\(name)",
+            exclude: exclude,
+            sources: sources,
+            resources: resources,
+            packageAccess: packageAccess,
+            cSettings: cSettings,
+            cxxSettings: cxxSettings,
+            swiftSettings: swiftSettings,
+            linkerSettings: linkerSettings,
+            plugins: plugins
+        )
+    }
+}
+
 let package = Package(
     name: "asutils",
     platforms: [.iOS(.v15), .macOS(.v13)],
     products: [
-        .library(name: "mockables", targets: [ "mockables" ]),
         .library(name: "ASCore", targets: [ "ASCore" ]),
+        .library(name: "Logging", targets: [ "Logging" ]),
+        .library(name: "Mockables", targets: [ "Mockables" ]),
         .library(name: "ASUIKit", targets: [ "ASUIKit" ])
     ],
     dependencies: [
@@ -20,60 +103,33 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     ],
     targets: [
-        .target(
+        .library(
             name: "ASCore",
-            dependencies: [
-                .product(name: "Mockable", package: "Mockable")
-            ],
-            path: "Sources/core",
-            swiftSettings: [
-                .define("MOCKING", .when(configuration: .debug))
-            ],
-            plugins: [
-                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
-            ]
+            path: "Sources/core"
         ),
-        .target(
-            name: "ASUIKit",
-            path: "Sources/ui",
-            plugins: [
-                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
-            ]
-        ),
-        .target(
-            name: "mockables",
-            dependencies: [
-                .product(name: "Mockable", package: "Mockable")
-            ],
-            path: "Sources/mockables",
-            swiftSettings: [
-                .define("MOCKING", .when(configuration: .debug))
-            ],
-            plugins: [
-                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
-            ]
-        ),
-        .testTarget(
-            name: "ASCore-tests",
+        .library(
+            name: "Logging",
             dependencies: [
                 "ASCore",
-                .product(name: "Mockable", package: "Mockable")
-            ],
-            path: "Tests/core",
-            swiftSettings: [
-                .define("MOCKING", .when(configuration: .debug))
-            ],
-            plugins: [
-                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
             ]
         ),
-        .testTarget(
-            name: "ASUIKit-tests",
-            dependencies: ["ASUIKit"],
-            path: "Tests/ui",
-            plugins: [
-                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLint")
-            ]
-        )
+        .library(
+            name: "Mockables"
+        ),
+        .library(
+            name: "ASUIKit",
+            path: "Sources/ui"
+        ),
+        .test(
+            name: "ASCore",
+            path: "Tests/core"
+        ),
+        .test(
+            name: "Logging"
+        ),
+        .test(
+            name: "ASUIKit",
+            path: "Tests/ui"
+        ),
     ]
 )

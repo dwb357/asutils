@@ -3,6 +3,7 @@
 // All rights reserved.
 //
 
+import ASCore
 import Foundation
 
 /// ``LogWriter`` that logs messages by appending them to a file
