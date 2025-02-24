@@ -7,7 +7,7 @@ import Foundation
 import Mockable
 
 @Mockable
-protocol UserDefaultsProtocol {
+public protocol UserDefaultsProtocol {
     // MARK: - Getting Default Values
 
     /// Returns the object associated with the specified key.
@@ -49,22 +49,22 @@ protocol UserDefaultsProtocol {
     // MARK: - Setting Default Values
 
     /// Sets the value of the specified default key.
-    func set(_: Any?, forKey: String)
+    func set(_ value: Any?, forKey: String)
 
     /// Sets the value of the specified default key to the specified float value.
-    func set(_: Float, forKey: String)
+    func set(_ value: Float, forKey: String)
 
     /// Sets the value of the specified default key to the double value.
-    func set(_: Double, forKey: String)
+    func set(_ value: Double, forKey: String)
 
     /// Sets the value of the specified default key to the specified integer value.
-    func set(_: Int, forKey: String)
+    func set(_ value: Int, forKey: String)
 
     /// Sets the value of the specified default key to the specified Boolean value.
-    func set(_: Bool, forKey: String)
+    func set(_ value: Bool, forKey: String)
 
     /// Sets the value of the specified default key to the specified URL.
-    func set(_: URL?, forKey: String)
+    func set(_ value: URL?, forKey: String)
 
     // MARK: - Removing Defaults
 
@@ -89,7 +89,7 @@ protocol UserDefaultsProtocol {
     func persistentDomain(forName: String) -> [String : Any]?
 
     /// Sets a dictionary for the specified persistent domain.
-    func setPersistentDomain(_: [String : Any], forName: String)
+    func setPersistentDomain(_ value: [String : Any], forName: String)
 
     /// Removes the contents of the specified persistent domain from the user’s defaults.
     func removePersistentDomain(forName: String)
@@ -103,7 +103,7 @@ protocol UserDefaultsProtocol {
     func volatileDomain(forName: String) -> [String : Any]
 
     /// Sets the dictionary for the specified volatile domain.
-    func setVolatileDomain(_: [String : Any], forName: String)
+    func setVolatileDomain(_ value: [String : Any], forName: String)
 
     /// Removes the specified volatile domain from the user’s defaults.
     func removeVolatileDomain(forName: String)
