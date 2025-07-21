@@ -1,6 +1,5 @@
 //
-// Copyright © 2025, David W. Berry
-// All rights reserved.
+// © Copyright 2025, David W. Berry. All Rights Reserved.
 //
 
 import Foundation

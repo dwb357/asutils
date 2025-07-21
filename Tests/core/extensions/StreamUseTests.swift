@@ -1,6 +1,5 @@
 //
-// Copyright © 2024, David W. Berry
-// All rights reserved.
+// © Copyright 2024, David W. Berry. All Rights Reserved.
 //
 
 import ASCore

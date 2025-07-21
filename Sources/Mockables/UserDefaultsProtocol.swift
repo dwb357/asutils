@@ -1,13 +1,18 @@
 //
-// Copyright © 2025, David W. Berry
-// All rights reserved.
+// © Copyright 2024-2025, David W. Berry. All Rights Reserved.
 //
 
 import Foundation
 import Mockable
 
+/// ``Mockable`` protocol mirroring `UserDefaults`
 @Mockable
 public protocol UserDefaultsProtocol {
+    // MARK: - Properties
+
+    /// The current volatile domain names.
+    var volatileDomainNames: [String] { get }
+
     // MARK: - Getting Default Values
 
     /// Returns the object associated with the specified key.
@@ -20,7 +25,7 @@ public protocol UserDefaultsProtocol {
     func array(forKey: String) -> [Any]?
 
     /// Returns the dictionary object associated with the specified key.
-    func dictionary(forKey: String) -> [String : Any]?
+    func dictionary(forKey: String) -> [String: Any]?
 
     /// Returns the string associated with the specified key.
     func string(forKey: String) -> String?
@@ -44,7 +49,7 @@ public protocol UserDefaultsProtocol {
     func double(forKey: String) -> Double
 
     /// Returns a dictionary that contains a union of all key-value pairs in the domains in the search list.
-    func dictionaryRepresentation() -> [String : Any]
+    func dictionaryRepresentation() -> [String: Any]
 
     // MARK: - Setting Default Values
 
@@ -82,28 +87,25 @@ public protocol UserDefaultsProtocol {
     // MARK: - Registering Defaults
 
     /// Adds the contents of the specified dictionary to the registration domain.
-    func register(defaults: [String : Any])
+    func register(defaults: [String: Any])
 
     // MARK: - Maintaining Persistent Domains
     /// Returns a dictionary representation of the defaults for the specified domain.
-    func persistentDomain(forName: String) -> [String : Any]?
+    func persistentDomain(forName: String) -> [String: Any]?
 
     /// Sets a dictionary for the specified persistent domain.
-    func setPersistentDomain(_ value: [String : Any], forName: String)
+    func setPersistentDomain(_ value: [String: Any], forName: String)
 
     /// Removes the contents of the specified persistent domain from the user’s defaults.
     func removePersistentDomain(forName: String)
 
     // MARK: - Maintaining Volatile Domains
 
-    /// The current volatile domain names.
-    var volatileDomainNames: [String] { get }
-
     /// Returns the dictionary for the specified volatile domain.
-    func volatileDomain(forName: String) -> [String : Any]
+    func volatileDomain(forName: String) -> [String: Any]
 
     /// Sets the dictionary for the specified volatile domain.
-    func setVolatileDomain(_ value: [String : Any], forName: String)
+    func setVolatileDomain(_ value: [String: Any], forName: String)
 
     /// Removes the specified volatile domain from the user’s defaults.
     func removeVolatileDomain(forName: String)

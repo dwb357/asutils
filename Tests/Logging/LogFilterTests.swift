@@ -1,6 +1,5 @@
 //
-// Copyright © 2024, David W. Berry
-// All rights reserved.
+// © Copyright 2024, David W. Berry. All Rights Reserved.
 //
 
 import Logging
@@ -9,7 +8,7 @@ import Testing
 
 struct LogFilterTests {
     @Test(arguments: LogLevel.allCases, LogLevel.allCases)
-    func filterByLevel(level: LogLevel, target: LogLevel) async throws {
+    func filterByLevel(level: LogLevel, target: LogLevel) throws {
         let mock = MockLogWriter(policy: .relaxed)
         let writer = mock.filter(level: target)
         let record = LogRecord(
@@ -28,7 +27,7 @@ struct LogFilterTests {
     }
 
     @Test(arguments: ["Test", "Other"], ["Test", "Other"])
-    func filterByCategory(category: String, target: String) async throws {
+    func filterByCategory(category: String, target: String) throws {
         let mock = MockLogWriter(policy: .relaxed)
         let writer = mock.filter(categories: target)
         let record = LogRecord(

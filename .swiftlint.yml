@@ -48,8 +48,4 @@ identifier_name:
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, codeclimate, junit, html, emoji, sonarqube, markdown, github-actions-logging, summary)
 
 file_header:
-  required_string: |
-                   //
-                   // Copyright © 2024, David W. Berry
-                   // All rights reserved.
-                   //
+  required_pattern: "© Copyright \\d{4}(-\\d{4})?, David W. Berry. All Rights Reserved."

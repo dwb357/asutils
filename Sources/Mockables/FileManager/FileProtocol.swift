@@ -1,10 +1,11 @@
 //
-// Copyright © 2025, David W. Berry
-// All rights reserved.
+// © Copyright 2025, David W. Berry. All Rights Reserved.
 //
 
 import Foundation
 import Mockable
+
+// swiftlint:disable missing_docs
 
 @Mockable
 public protocol FileProtocol {
@@ -28,3 +29,5 @@ public extension FileProtocol {
         try write(string: string, encoding: .utf8)
     }
 }
+
+// swiftlint:enable missing_docs

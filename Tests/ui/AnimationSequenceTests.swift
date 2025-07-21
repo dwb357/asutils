@@ -1,6 +1,5 @@
 //
-// Copyright © 2024, David W. Berry
-// All rights reserved.
+// © Copyright 2024, David W. Berry. All Rights Reserved.
 //
 
 @testable import ASUIKit
@@ -41,14 +40,14 @@ struct AnimationSequenceTests {
     }
 
     @Test
-    func delayUpdatesDefault() async throws {
+    func delayUpdatesDefault() throws {
         let sequence = AnimationSequence().delay(Self.delay)
 
         #expect(sequence.delay == Self.delay)
     }
 
     @Test
-    func durationUpdatesDefault() async throws {
+    func durationUpdatesDefault() throws {
         let sequence = AnimationSequence().duration(Self.duration)
 
         #expect(sequence.duration == Self.duration)

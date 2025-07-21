@@ -1,6 +1,5 @@
 //
-// Copyright © 2024, David W. Berry
-// All rights reserved.
+// © Copyright 2024, David W. Berry. All Rights Reserved.
 //
 
 import SwiftUI
@@ -36,7 +35,7 @@ public struct AnimationSequence: Sendable {
     }
 
     @MainActor
-    struct Step: Sendable {
+    struct Step {
         /// Style of animation for this step
         let style: Style
         /// Duration of this animation

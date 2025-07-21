@@ -1,6 +1,5 @@
 //
-// Copyright © 2024, David W. Berry
-// All rights reserved.
+// © Copyright 2024, David W. Berry. All Rights Reserved.
 //
 
 import Foundation
@@ -208,18 +207,27 @@ public extension StaticLogger {
         )
     }
 
+    /// Log entry, exit, and elapsed time of a block of code.
+    /// - Parameters:
+    ///     - message: message to log
+    ///     - category: category to log
+    ///     - level: level to log message to, defaults to ``.trace``
+    ///     - file: file of trace call
+    ///     - line: line of trace call
+    ///     - block: block of code to trace and time
+    /// - Returns: the value returned by ``block``
     static func time<Result>(
         _ message: String,
         category: String? = nil,
         level: LogLevel = .trace,
         file: StaticString = #file,
         line: UInt = #line,
-        _ block: () throws -> Result
+        block: () throws -> Result
     ) rethrows -> Result {
         let start = Date.now
 
         log(
-            "Start \(message)",
+            "Enter \(message)",
             level: level,
             category: category,
             file: file,
@@ -228,7 +236,7 @@ public extension StaticLogger {
 
         defer {
             log(
-                "Stop \(message), elapsed: \(-start.timeIntervalSinceNow) seconds",
+                "Elapsed \(-start.timeIntervalSinceNow): \(message)",
                 level: level,
                 category: category,
                 file: file,

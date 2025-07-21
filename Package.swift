@@ -1,7 +1,7 @@
 // swift-tools-version: 6.0
 //  ASUtils
 //
-//  © Copyright 2024 David W. Berry. All Rights Reserved.
+//  © Copyright 2024-2025 David W. Berry. All Rights Reserved.
 //
 
 import PackageDescription
