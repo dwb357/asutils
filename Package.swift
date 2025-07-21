@@ -99,7 +99,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Kolos65/Mockable", from: "0.4.0"),
-        .package(url: "https://github.com/realm/SwiftLint", from: "0.57.1"),
+        .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", "0.57.1"..<"0.58.0"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
         // We don't use swift-syntax at all, but this forces Mockable to not use 601 which
         // doesn't seem to compile.
