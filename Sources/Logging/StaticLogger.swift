@@ -208,14 +208,16 @@ public extension StaticLogger {
         )
     }
 
-    static func time(
+    static func time<Result>(
         _ message: String,
         category: String? = nil,
         level: LogLevel = .trace,
         file: StaticString = #file,
         line: UInt = #line,
-        _ block: () -> Void
-    ) {
+        _ block: () throws -> Result
+    ) rethrows -> Result {
+        let start = Date.now
+
         log(
             "Start \(message)",
             level: level,
@@ -224,14 +226,16 @@ public extension StaticLogger {
             line: line
         )
 
-        let elapsed = ContinuousClock().measure(block)
+        defer {
+            log(
+                "Stop \(message), elapsed: \(-start.timeIntervalSinceNow) seconds",
+                level: level,
+                category: category,
+                file: file,
+                line: line
+            )
+        }
 
-        log(
-            "Stop \(message), elapsed: \(elapsed) seconds",
-            level: level,
-            category: category,
-            file: file,
-            line: line
-        )
+        return try block()
     }
 }
