@@ -207,4 +207,31 @@ public extension StaticLogger {
             line: line
         )
     }
+
+    static func time(
+        _ message: String,
+        category: String? = nil,
+        level: LogLevel = .trace,
+        file: StaticString = #file,
+        line: UInt = #line,
+        _ block: () -> Void
+    ) {
+        log(
+            "Start \(message)",
+            level: level,
+            category: category,
+            file: file,
+            line: line
+        )
+
+        let elapsed = ContinuousClock().measure(block)
+
+        log(
+            "Stop \(message), elapsed: \(elapsed) seconds",
+            level: level,
+            category: category,
+            file: file,
+            line: line
+        )
+    }
 }
