@@ -24,21 +24,21 @@ public struct LogFormatter {
     nonisolated(unsafe) public static var `default` = Self.medium
 
     /// Format log messages with just the level, category, and message
-    nonisolated(unsafe) static let simple = Self { record in
+    nonisolated(unsafe) public static let simple = Self { record in
         let category = record.category.map { "[\($0)] " } ?? ""
 
         return "\(record.level): \(category)\(record.message)"
     }
 
     /// Format log messages with level, category, message, and function name
-    nonisolated(unsafe) static let medium = Self { record in
+    nonisolated(unsafe) public static let medium = Self { record in
         let category = record.category.map { "[\($0)] " } ?? ""
 
         return "\(timeStamp) \(record.level): \(category)\(record.message)"
     }
 
     /// Format log messages with level, category, message, function name, and file location
-    nonisolated(unsafe) static let full = Self { record in
+    nonisolated(unsafe) public static let full = Self { record in
         let category = record.category.map { "[\($0)] " } ?? ""
 
         return "\(timeStamp) \(record.level): \(category) \(record.file):\(record.line): \(record.message)"
