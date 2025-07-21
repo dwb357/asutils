@@ -101,6 +101,9 @@ let package = Package(
         .package(url: "https://github.com/Kolos65/Mockable", from: "0.4.0"),
         .package(url: "https://github.com/realm/SwiftLint", from: "0.57.1"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
+        // We don't use swift-syntax at all, but this forces Mockable to not use 601 which
+        // doesn't seem to compile.
+        .package(url: "https://github.com/swiftlang/swift-syntax.git", "509.0.0"..<"601.0.0"),
     ],
     targets: [
         .library(
