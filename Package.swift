@@ -98,7 +98,7 @@ let package = Package(
         .library(name: "ASUIKit", targets: [ "ASUIKit" ])
     ],
     dependencies: [
-        .package(url: "https://github.com/Kolos65/Mockable", from: "0.1.1"),
+        .package(url: "https://github.com/Kolos65/Mockable", from: "0.4.0"),
         .package(url: "https://github.com/realm/SwiftLint", from: "0.57.1"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     ],
