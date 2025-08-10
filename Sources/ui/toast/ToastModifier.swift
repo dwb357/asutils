@@ -39,18 +39,13 @@ public struct ToastModifier<Alert: View>: ViewModifier {
 
     @ViewBuilder
     public func body(content: Content) -> some View {
-        if isDisplayed {
-            ZStack(alignment: position.alignment) {
-                content
+        content.overlay(alignment: position.alignment) {
+            if isDisplayed {
                 alert()
                     .if(duration) { view, duration in
                         view.task {
-                            do {
-                                try await Task.sleep(for: duration)
-                                isDisplayed = false
-                            } catch {
-                                // swiftlint appeasement
-                            }
+                            try? await Task.sleep(for: duration)
+                            isDisplayed = false
                         }
                     }
                     .if(dismissOnTouch) { view in
@@ -60,8 +55,6 @@ public struct ToastModifier<Alert: View>: ViewModifier {
                     }
                     .padding(position.padding)
             }
-        } else {
-            content
         }
     }
 }
@@ -110,7 +103,7 @@ public extension View {
     /// - returns the receiver modified to display a toast message.
     func toast(
         _ isDisplayed: Binding<Bool>,
-        _ message: String,
+        message: String,
         duration: Duration? = .shortToast,
         position: ToastPosition = .bottom,
         dismissOnTouch: Bool = false
@@ -176,6 +169,11 @@ private func getPositionFromName(_ name: String) -> ToastPosition {
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .toast($isDisplayed, "Toast", position: getPositionFromName(positionName))
+        .toast(
+            $isDisplayed,
+            message: "Toast",
+            position: getPositionFromName(positionName),
+            dismissOnTouch: true
+        )
     }
 }
