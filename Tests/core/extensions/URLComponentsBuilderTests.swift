@@ -73,7 +73,7 @@ final class URLComponentsBuilderTests {
 
         #expect(
             "http://some.where/a/b" ==
-            start?.append(path: "b").url?.absoluteString
+            start?.appending(path: "b").url?.absoluteString
         )
     }
 
@@ -83,7 +83,7 @@ final class URLComponentsBuilderTests {
 
         #expect(
             "http://some.where/a/b" ==
-            start?.append(path: "/b").url?.absoluteString
+            start?.appending(path: "/b").url?.absoluteString
         )
     }
 
@@ -93,7 +93,7 @@ final class URLComponentsBuilderTests {
 
         #expect(
             "http://some.where/a/b" ==
-            start?.append(path: "b").url?.absoluteString
+            start?.appending(path: "b").url?.absoluteString
         )
     }
 
@@ -103,7 +103,7 @@ final class URLComponentsBuilderTests {
 
         #expect(
             "http://some.where/a/b" ==
-            start?.append(path: "/b").url?.absoluteString
+            start?.appending(path: "/b").url?.absoluteString
         )
     }
 
@@ -113,7 +113,7 @@ final class URLComponentsBuilderTests {
 
         #expect(
             "http://some.where/a/b/c" ==
-            start?.append(elements: "b", "c").url?.absoluteString
+            start?.appending(elements: "b", "c").url?.absoluteString
         )
     }
 
@@ -123,7 +123,7 @@ final class URLComponentsBuilderTests {
 
         #expect(
             "http://some.where/a/b/c" ==
-            start?.append(elements: "b", "c").url?.absoluteString
+            start?.appending(elements: "b", "c").url?.absoluteString
         )
     }
 
@@ -133,7 +133,7 @@ final class URLComponentsBuilderTests {
 
         #expect(
             "http://some.where/a/b%20c&d" ==
-            start?.append(elements: "b c&d").url?.absoluteString
+            start?.appending(elements: "b c&d").url?.absoluteString
         )
     }
 
@@ -143,7 +143,7 @@ final class URLComponentsBuilderTests {
 
         #expect(
             "http://some.where/a?q=a%20b" ==
-            start?.append(query: "q", value: "a b").url?.absoluteString
+            start?.appending(query: "q", value: "a b").url?.absoluteString
         )
     }
 

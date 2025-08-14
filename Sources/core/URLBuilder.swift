@@ -72,16 +72,35 @@ public extension URLBuilder {
     /// builder pattern to append to the `path` of a ``URLBuilder``
     /// - parameter path: path to append
     /// - returns a new, modified, `URLBuilder`
-    func append(path: String) -> Self {
-        mutate { components in
-            let first = components.path.hasSuffix("/")
-                ? components.path
-                : (components.path + "/")
-            let second = path.hasPrefix("/")
-                ? String(path[path.index(after: path.startIndex)..<path.endIndex])
-                : path
+    mutating func append(path additionalPath: String) {
+        let first = path.hasSuffix("/") ? String(path.dropLast()) : path
+        let second = additionalPath.hasPrefix("/") ? String(additionalPath.dropFirst()) : additionalPath
 
-            components.path = first + second
+        self.path = first + "/" + second
+    }
+
+    /// builder pattern to append to the path of a ``URLBuilder``
+    /// - parameter elements: path elements to append, appended elements
+    /// will be separated by the standard path separator "/".
+    /// - returns a new, modified, `URLBuilder`
+    mutating func append(elements: String...) {
+        append(path: elements.joined(separator: "/"))
+    }
+
+    /// builder pattern to append to the path of a ``URLBuilder``
+    /// - parameter elements: path elements to append, appended elements
+    /// will be separated by the standard path separator "/".
+    /// - returns a new, modified, `URLBuilder`
+    mutating func append(elements: [String]) {
+        append(path: elements.joined(separator: "/"))
+    }
+
+    /// builder pattern to append to the `path` of a ``URLBuilder``
+    /// - parameter path: path to append
+    /// - returns a new, modified, `URLBuilder`
+    func appending(path: String) -> Self {
+        mutate { components in
+            components.append(path: path)
         }
     }
 
@@ -89,10 +108,16 @@ public extension URLBuilder {
     /// - parameter elements: path elements to append, appended elements
     /// will be separated by the standard path separator "/".
     /// - returns a new, modified, `URLBuilder`
-    func append(elements: String...) -> Self {
-        append(
-            path: elements.joined(separator: "/")
-        )
+    func appending(elements: String...) -> Self {
+        appending(path: elements.joined(separator: "/"))
+    }
+
+    /// builder pattern to append to the path of a ``URLBuilder``
+    /// - parameter elements: path elements to append, appended elements
+    /// will be separated by the standard path separator "/".
+    /// - returns a new, modified, `URLBuilder`
+    func appending(elements: [String]) -> Self {
+        appending(path: elements.joined(separator: "/"))
     }
 
     /// builder pattern to append a query to a ``URLBuilder``
@@ -100,10 +125,18 @@ public extension URLBuilder {
     /// - parameter value: value to assign to query, if not nil no value will be associated
     /// with the query
     /// - returns a new, modified, `URLBuilder`
-    func append(query: String, value: String? = nil) -> Self {
+    mutating func append(query: String, value: String? = nil) {
+        queryItems = (queryItems ?? []) + [URLQueryItem(name: query, value: value)]
+    }
+
+    /// builder pattern to append a query to a ``URLBuilder``
+    /// - parameter query: query to assign
+    /// - parameter value: value to assign to query, if not nil no value will be associated
+    /// with the query
+    /// - returns a new, modified, `URLBuilder`
+    func appending(query: String, value: String? = nil) -> Self {
         mutate { components in
-            components.queryItems = (components.queryItems ?? [])
-                + [URLQueryItem(name: query, value: value)]
+            components.append(query: query, value: value)
         }
     }
 
